@@ -1,8 +1,11 @@
+const { name } = require('ejs');
 const express = require('express');
 const app = express();
 
 
-const RESTAURANT = {
+app.use(express.static('public'));
+
+const restaurant = {
     name: 'The Green Byte Bistro',
     isOpen: true,
     address: '742 Evergreen Rd, Mapleview, OS 45502',
@@ -49,14 +52,36 @@ const RESTAURANT = {
         details: 'Crispy and lightly seasoned string bean fries, served in a pattern for a fun twist.'
       }
     ]
-  }
+  };
 
 
 app.get('/', (req, res) => {
   res.render('home.ejs', {
-    RESTAURANT
-  });
+    restaurant: restaurant
+  })
 });
+
+app.get('/menu', (req, res) => {
+  res.render('menu.ejs', {
+    menu: restaurant.menu
+  })
+});
+
+app.get('/menu/:category', (req, res) => {
+    const cat = req.params.category
+    if (cat = 'desserts'){
+        res.render('category.ejs', {
+            desserts: restaurant.menu.category = 'desserts'
+        })
+    }
+
+    else if (cat = 'mains'){
+        res.render('category.ejs', {
+            desserts: restaurant.menu.category = 'mains'
+        })
+    }
+  
+})
 
 app.listen(5000, () => {
     console.log('listening on port 5000!');
